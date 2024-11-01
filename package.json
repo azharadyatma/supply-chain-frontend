@@ -1,0 +1,23 @@
+{
+  "name": "supply-chain-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "axios": "^1.7.7",
+    "bootstrap": "^5.3.3",
+    "core-js": "^3.8.3",
+    "mitt": "^3.0.1",
+    "pinia": "^2.2.4",
+    "vue": "^3.2.13",
+    "vue-router": "^4.4.5"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-service": "~5.0.0"
+  }
+}
