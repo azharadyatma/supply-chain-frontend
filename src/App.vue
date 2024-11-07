@@ -1,129 +1,81 @@
 <template>
-  <div id="app">
-    <Header
-      :currentRole="currentRole"
-      @update-role="updateRole"
-      @toggle-sidebar="toggleSidebar"
-      :isSidebarVisible="isSidebarVisible"
-    />
-    <div class="app-content">
-      <Sidebar
-        :currentRole="currentRole"
-        :isSidebarVisible="isSidebarVisible"
-        @show-component="navigateTo"
-      />
-      <div class="main-content" :class="{ expanded: isSidebarVisible }">
-        <component
-          :is="currentView"
-          :currentComponent="currentComponent"
-          v-if="currentRole === 'admin'"
-          @add-user="handleAddUser"
-          @edit-user="handleEditUser"
-          @delete-user="handleDeleteUser"
-          @add-item="handleAddItem"
-          @edit-item="handleEditItem"
-          @delete-item="handleDeleteItem"
+    <div id="app">
+        <Header
+            :currentRole="currentRole"
+            @update-role="updateRole"
+            @toggle-sidebar="toggleSidebar"
+            :isSidebarVisible="isSidebarVisible"
         />
-        <component
-          :is="currentView"
-          v-else
-          :currentComponent="currentComponent"
-        />
-      </div>
+        <div class="app-content">
+            <Sidebar
+                :currentRole="currentRole"
+                :isSidebarVisible="isSidebarVisible"
+                @showComponent="navigateTo"
+            />
+            <div class="main-content" :class="{ expanded: isSidebarVisible }">
+                <router-view
+                    :key="$route.fullPath"
+                    :currentComponent="$route.params.component"
+                />
+            </div>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
-import Header from "./components/dashboard/Header.vue";
-import Sidebar from "./components/dashboard/Sidebar.vue";
-import AdminView from "./views/AdminView.vue";
-import UserView from "./views/UserView.vue";
-import { EventBus } from "./utils/EventBus.js";
+import Header from './components/dashboard/Header.vue'
+import Sidebar from './components/dashboard/Sidebar.vue'
+import { EventBus } from './utils/EventBus'
 
 export default {
-  components: {
-    Header,
-    Sidebar,
-    AdminView,
-    UserView,
-  },
-
-  data() {
-    const params = new URLSearchParams(window.location.search);
-
-    return {
-      currentRole: params.get("role") || "admin",
-      currentComponent: params.get("component") || "items",
-      isSidebarVisible: params.get("sidebar") !== "hidden",
-    };
-  },
-
-  computed: {
-    currentView() {
-      return this.currentRole === "admin" ? AdminView : UserView;
+    components: {
+        Header,
+        Sidebar,
     },
-  },
-
-  methods: {
-    updateRole(role) {
-      this.currentRole = role;
-      this.navigateTo("items");
+    data() {
+        return {
+            currentRole: this.$route.name || 'admin',
+            isSidebarVisible: true,
+            searchTerm: '',
+        }
     },
-
-    navigateTo(component) {
-      this.currentComponent = component;
-      this.updateURLParams();
+    watch: {
+        '$route.name'(newRole) {
+            this.currentRole = newRole
+        },
     },
-
-    toggleSidebar() {
-      this.isSidebarVisible = !this.isSidebarVisible;
-      this.updateURLParams();
+    computed: {
+        currentView() {
+            return this.currentRole === 'admin' ? AdminView : UserView
+        },
     },
-
-    updateURLParams() {
-      const params = new URLSearchParams();
-      params.set("role", this.currentRole);
-      params.set("component", this.currentComponent);
-      params.set("sidebar", this.isSidebarVisible ? "visible" : "hidden");
-
-      window.history.replaceState(
-        {},
-        "",
-        `${window.location.pathname}?${params}`
-      );
+    methods: {
+        updateRole(role) {
+            this.currentRole = role
+            this.navigateTo('items')
+        },
+        navigateTo(component) {
+            this.$router.push({ name: this.currentRole, params: { component } })
+        },
+        toggleSidebar() {
+            this.isSidebarVisible = !this.isSidebarVisible
+        },
+        handleSearch(newQuery) {
+            console.log('Search term:', newQuery)
+            if (this.currentRole === 'admin') {
+                console.log('Search in admin items')
+            } else if (this.currentRole === 'user') {
+                console.log('Search in user items')
+            }
+        },
     },
-
-    handleSearch(newQuery) {
-      console.log("Search term:", newQuery);
-      if (this.currentRole === "admin") {
-        console.log("Search in admin items");
-      } else if (this.currentRole === "user") {
-        console.log("Search in user items");
-      }
+    mounted() {
+        EventBus.on('search', this.handleSearch)
     },
-
-    handleAddItem(item) {
-      console.log("Item added:", item);
+    beforeUnmount() {
+        EventBus.off('search', this.handleSearch)
     },
-
-    handleEditItem(item) {
-      console.log("Item edited:", item);
-    },
-
-    handleDeleteItem(itemId) {
-      console.log("Item deleted:", itemId);
-    },
-  },
-
-  mounted() {
-    EventBus.on("search", this.handleSearch);
-  },
-
-  beforeUnmount() {
-    EventBus.off("search", this.handleSearch);
-  },
-};
+}
 </script>
 
 <style scoped>

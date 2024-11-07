@@ -8,4 +8,4 @@ import axios from 'axios'
 import './assets/styles/global.css';
 
 
-createApp(App).use(createPinia()).use(router).mount('#app')
+createApp(App).use(router).use(createPinia()).use(router).mount('#app')
