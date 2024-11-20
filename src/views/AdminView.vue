@@ -9,6 +9,8 @@
       />
       <UserList v-if="currentComponent === 'users'" />
       <TransactionList v-if="currentComponent === 'transactions'" />
+      <Profile v-if="currentComponent === 'profile'" />
+      <Label v-if="currentComponent === 'label'" />
     </div>
     <Modal
       v-if="showForm"
@@ -26,8 +28,10 @@ import ItemList from "@/components/admin/item/ItemList.vue";
 import ItemForm from "@/components/admin/item/ItemForm.vue";
 import UserList from "@/components/admin/user/UserList.vue";
 import TransactionList from "@/components/admin/transaction/TransactionList.vue";
+import Profile from "@/components/admin/profile/Profile.vue";
 import Modal from "@/components/Modal.vue";
 import Dashboard from "@/components/admin/dashboard/dashboard.vue";
+import Label from "@/components/admin/label/Label.vue";
 
 export default {
   components: {
@@ -37,6 +41,8 @@ export default {
     UserList,
     TransactionList,
     Modal,
+    Label,
+    Profile,
   },
 
   props: {

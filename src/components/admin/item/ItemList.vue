@@ -1,11 +1,20 @@
 <template>
   <div class="product">
-    <h2 class="product-title">Product</h2>
+    <!--<h2 class="product-title">Product</h2>-->
     <div class="item-list">
       <div class="header">
-        <h2>Daftar Barang</h2>
+        <h2>Product List</h2>
+        <div class="search">
+          <input
+            type="search"
+            class="form-control rounded"
+            placeholder="Search"
+            aria-label="Search"
+            aria-describedby="search-addon"
+          />
+        </div>
         <button class="add-btn" @click="showAddForm">
-          <i class="fa-solid fa-plus icon"></i>Tambah Barang
+          <i class="fa-solid fa-plus icon"></i>Add Product
         </button>
       </div>
 
@@ -13,15 +22,15 @@
         <table>
           <thead>
             <tr>
-              <th>Kode</th>
-              <th>Nama Barang</th>
-              <th>Deskripsi</th>
-              <th>Stok</th>
-              <th class="action-column">Aksi</th>
+              <th>Product ID</th>
+              <th>Product Name</th>
+              <th>Description</th>
+              <th>Stock</th>
+              <th class="action-column">Action</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="item in items" :key="item.kode">
+            <tr v-for="item in paginatedItems" :key="item.kode">
               <td>{{ item.kode }}</td>
               <td>{{ item.nama }}</td>
               <td>{{ item.deskripsi }}</td>
@@ -37,6 +46,44 @@
             </tr>
           </tbody>
         </table>
+
+        <nav aria-label="page-navigation-table">
+          <ul class="pagination">
+            <li class="page-item" :class="{ disabled: currentPage === 1 }">
+              <a
+                class="page-link"
+                href="#"
+                @click.prevent="changePage(currentPage - 1)"
+                aria-label="Previous"
+              >
+                <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li
+              v-for="page in totalPages"
+              :key="page"
+              class="page-item"
+              :class="{ active: currentPage === page }"
+            >
+              <a class="page-link" href="#" @click.prevent="changePage(page)">
+                {{ page }}
+              </a>
+            </li>
+            <li
+              class="page-item"
+              :class="{ disabled: currentPage === totalPages }"
+            >
+              <a
+                class="page-link"
+                href="#"
+                @click.prevent="changePage(currentPage + 1)"
+                aria-label="Next"
+              >
+                <span aria-hidden="true">&raquo;</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
 
       <div>
@@ -82,7 +129,21 @@ export default {
       showForm: false,
       selectedItem: null,
       isEdit: false,
+      currentPage: 1,
+      itemsPerPage: 5,
     };
+  },
+
+  computed: {
+    totalPages() {
+      return Math.ceil(this.items.length / this.itemsPerPage);
+    },
+
+    paginatedItems() {
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      const end = start + this.itemsPerPage;
+      return this.items.slice(start, end);
+    },
   },
 
   methods: {
@@ -123,6 +184,12 @@ export default {
     deleteItem(kode) {
       this.items = this.items.filter((item) => item.kode !== kode);
     },
+
+    changePage(page) {
+      if (page >= 1 && page <= this.totalPages) {
+        this.currentPage = page;
+      }
+    },
   },
 };
 </script>
@@ -139,7 +206,7 @@ export default {
 }
 
 .item-list {
-  padding: 24px;
+  padding: 40px;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -150,22 +217,36 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 }
 
 h2 {
   color: #736efe;
   font-size: 24px;
+  font-weight: 600;
+  margin-right: 350px;
+}
+
+.search {
+  flex: 1;
+  width: 100%;
+  margin-right: 10px;
+}
+
+.search input::placeholder {
+  font-size: 14px;
+  color: #cbcbcb;
 }
 
 .add-btn {
   background-color: #736efe;
   color: white;
-  padding: 8px 12px;
+  padding: 10px 12px;
   border: none;
   cursor: pointer;
   border-radius: 6px;
   font-size: 14px;
+  font-weight: 600;
 }
 
 .add-btn:hover {
@@ -184,18 +265,19 @@ table {
 
 th,
 td {
-  border: 0.5px solid #cbcbcb;
   padding: 12px 15px;
   text-align: center;
   vertical-align: middle;
   font-size: 14px;
+  border-top: 0.5px solid #cbcbcb;
+  border-bottom: 0.5px solid #cbcbcb;
 }
 
 th {
   background-color: #736efe;
   color: white;
   font-size: 14px;
-  text-transform: uppercase;
+  font-weight: 600;
 }
 
 tr:nth-child(even) {
@@ -203,7 +285,7 @@ tr:nth-child(even) {
 }
 
 tr:hover {
-  background-color: #cbcbcb;
+  background-color: #dadada;
 }
 
 button {
@@ -224,12 +306,13 @@ button {
 
 .icon {
   margin-right: 8px;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 .action-buttons {
   display: flex;
   justify-content: center;
-  align-items: center;
 }
 
 .edit-btn {
@@ -255,6 +338,41 @@ button {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.pagination {
+  justify-content: flex-end;
+  margin-top: 20px;
+}
+
+.page-item {
+  margin-left: 5px;
+}
+
+.page-link {
+  color: #736efe; /* Warna teks ungu untuk semua halaman */
+  background-color: transparent; /* Menghilangkan background default */
+  border: 1px solid #736efe; /* Border ungu untuk halaman */
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: 600px;
+  border-radius: 6px;
+}
+
+.page-link:hover {
+  background-color: #615dd7; /* Mengubah background menjadi warna lebih gelap saat hover */
+  color: white; /* Menjadikan teks putih saat hover */
+}
+
+.page-item.active .page-link {
+  background-color: #736efe; /* Latar belakang ungu pada halaman yang aktif */
+  color: white; /* Teks putih pada halaman aktif */
+  border: 1px solid #736efe; /* Border ungu untuk halaman aktif */
+}
+
+.page-item.disabled .page-link {
+  color: #cbcbcb; /* Warna abu-abu untuk halaman yang dinonaktifkan */
+  border: 1px solid #cbcbcb; /* Border abu-abu */
 }
 
 @media (max-width: 600px) {

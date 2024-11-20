@@ -10,13 +10,13 @@
           @click="selectRole('admin')"
           :class="{ active: currentRole === 'admin' }"
         >
-          Admin
+          Supplier
         </button>
         <button
           @click="selectRole('user')"
           :class="{ active: currentRole === 'user' }"
         >
-          User
+          Stakeholder
         </button>
       </div>
     </div>

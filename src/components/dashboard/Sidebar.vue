@@ -25,7 +25,7 @@
         </button>
       </li>
 
-      <li v-if="currentRole === 'admin'">
+      <!--<li v-if="currentRole === 'admin'">
         <button
           @click="showComponent('users')"
           :class="{ active: activeComponent === 'users' }"
@@ -39,7 +39,7 @@
           ></i>
           Users
         </button>
-      </li>
+      </li>-->
 
       <li>
         <button
@@ -91,7 +91,7 @@
 
       <li>
         <button
-          @click="showComponent('transactions')"
+          @click="showComponent('label')"
           :class="{ active: activeComponent === 'label' }"
         >
           <i
@@ -107,7 +107,7 @@
 
       <li>
         <button
-          @click="showComponent('transactions')"
+          @click="showComponent('profile')"
           :class="{ active: activeComponent === 'profile' }"
         >
           <i

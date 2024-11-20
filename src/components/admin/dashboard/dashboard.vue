@@ -31,11 +31,33 @@
         </div>
       </div>
     </div>
+
+    <div class="chart-date-container">
+      <div class="card">
+        <h3>Sales Data Chart</h3>
+
+        <BarChart />
+      </div>
+      <div class="datepicker-wrapper">
+        <h3>Calendar</h3>
+        <DatePicker />
+      </div>
+    </div>
+    <TransactionList />
   </div>
 </template>
 
 <script>
+import BarChart from "@/components/admin/dashboard/BarChart.vue";
+import DatePicker from "@/components/admin/dashboard/Calendar.vue";
+import TransactionList from "@/components/admin/transaction/TransactionList.vue";
+
 export default {
+  components: {
+    BarChart,
+    DatePicker,
+    TransactionList,
+  },
   data() {
     return {
       productStock: 100, // Ganti dengan data nyata
@@ -54,7 +76,8 @@ export default {
 
 .card-container {
   display: flex;
-  justify-content: space-between; /* Mengatur jarak antar card */
+  justify-content: space-between;
+  padding: 10px;
 }
 
 h2 {
@@ -70,16 +93,16 @@ h3 {
 
 .card-content {
   display: flex;
-  align-items: center; /* Mengatur agar teks dan ikon berada sejajar */
-  justify-content: space-between; /* Mengatur agar teks dan ikon berada di ujung yang berlawanan */
-  flex: 1; /* Membuat konten mengambil seluruh lebar yang tersedia */
+  align-items: center;
+  justify-content: space-between;
+  flex: 1;
 }
 
 p {
   font-size: 32px;
   font-weight: bold;
   color: #736efe;
-  margin-right: 10px; /* Jarak antara angka dan ikon */
+  margin-right: 10px;
   margin-bottom: 0;
 }
 
@@ -96,19 +119,19 @@ p {
 }
 
 .card:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Efek hover */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .icon {
-  font-size: 20px; /* Ukuran ikon */
-  color: #ffffff; /* Warna ikon, bisa disesuaikan */
-  border-radius: 20px; /* Membuat ikon berbentuk lingkaran */
-  padding: 20px; /* Jarak dalam ikon */
-  width: 50px; /* Ukuran latar belakang ikon */
-  height: 50px; /* Ukuran latar belakang ikon */
-  display: flex; /* Mengatur ikon menjadi fleksibel */
-  align-items: center; /* Menyelaraskan ikon di tengah */
-  justify-content: center; /* Menyelaraskan ikon di tengah */
+  font-size: 20px;
+  color: #ffffff;
+  border-radius: 20px;
+  padding: 20px;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .product-icon {
@@ -129,5 +152,28 @@ p {
 .pending-icon {
   color: #fe6e70;
   background-color: #ffdfdf;
+}
+
+.chart-date-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px;
+}
+
+.datepicker-wrapper {
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  padding-bottom: 150px;
+  margin: 10px;
+  width: auto;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.datepicker-wrapper:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 </style>

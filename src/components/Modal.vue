@@ -10,7 +10,6 @@
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">{{ title }}</h5>
           <button
             type="button"
             class="btn-close"
@@ -18,19 +17,8 @@
             aria-label="Close"
           ></button>
         </div>
-
         <div class="modal-body">
           <slot></slot>
-        </div>
-
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            @click="$emit('close')"
-          >
-            Cancel
-          </button>
         </div>
       </div>
     </div>

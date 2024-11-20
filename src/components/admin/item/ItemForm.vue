@@ -53,10 +53,14 @@
           required
         />
       </div>
-
-      <button type="submit" class="btn btn-success">
-        {{ isEdit ? "Simpan Perubahan" : "Tambah Barang" }}
-      </button>
+      <div class="button-container">
+        <button type="button" class="btn btn-secondary" @click="$emit('close')">
+          Cancel
+        </button>
+        <button type="submit" class="btn btn-success">
+          {{ isEdit ? "Save" : "Save" }}
+        </button>
+      </div>
     </form>
   </div>
 </template>
@@ -122,7 +126,7 @@ form {
   background-color: #fff;
   border-radius: 8px;
   padding: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
   margin: 20px;
 }
 
@@ -130,15 +134,11 @@ form {
   margin-bottom: 1rem;
 }
 
-.form-label {
-  font-weight: bold;
-  color: #4b3f6b;
-  font-size: 14px;
-}
-
 .form-control {
   border-radius: 4px;
   border: 1px solid #cbcbcb;
+  color: #4b3f6b;
+  font-size: 14px;
 }
 
 .form-control:focus {
@@ -152,10 +152,20 @@ form {
   font-size: 14px;
 }
 
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 20px;
+}
+
 .btn-success {
   background-color: #736efe;
   border-color: #736efe;
   color: white;
+  width: 120px; /* Ukuran tombol */
+  height: 40px;
+  font-size: 14px;
 }
 
 .btn-success:hover {
@@ -163,10 +173,24 @@ form {
   border-color: #615dd7;
 }
 
+.btn-secondary {
+  background-color: #fe6e70;
+  border-color: #fe6e70;
+  color: white;
+  width: 120px; /* Ukuran tombol */
+  height: 40px;
+  font-size: 14px;
+}
+
+.btn-secondary:hover {
+  background-color: #bb3232;
+  border-color: #bb3232;
+}
+
 h3 {
   color: #736efe;
   font-weight: bold;
   margin: 20px;
-  font-size: 32px;
+  font-size: 24px;
 }
 </style>

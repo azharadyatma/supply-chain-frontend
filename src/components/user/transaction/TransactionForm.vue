@@ -1,177 +1,121 @@
 <template>
-  <div class="transaction-form">
-    <form @submit.prevent="submitForm">
-      <h2>Pengembalian Barang</h2>
-
-      <div>
-        <label for="kode">Kode Barang:</label>
-
-        <input type="text" v-model="form.kode" id="kode" :disabled="true" />
+  <div class="order-form">
+    <h2 class="order-form-title">Form Order Stakeholder</h2>
+    <form @submit.prevent="submitOrder">
+      <div class="form-group">
+        <label for="orderNo">Order No</label>
+        <input type="text" id="orderNo" v-model="order.orderNo" required />
       </div>
 
-      <div>
-        <label for="nama">Nama Produk:</label>
-
-        <input type="text" v-model="form.nama" id="nama" :disabled="true" />
-      </div>
-
-      <div>
-        <label for="tanggal_pinjam">Tanggal Pinjam:</label>
-
+      <div class="form-group">
+        <label for="stakeholderName">Nama Stakeholder</label>
         <input
-          type="date"
-          v-model="form.tanggal_pinjam"
-          id="tanggal_pinjam"
-          :disabled="true"
+          type="text"
+          id="stakeholderName"
+          v-model="order.stakeholderName"
+          required
         />
       </div>
 
-      <div>
-        <label for="tanggal_kembali">Tanggal Kembali:</label>
-
-        <input
-          type="date"
-          v-model="form.tanggal_kembali"
-          id="tanggal_kembali"
-        />
+      <div class="form-group">
+        <label for="product">Product</label>
+        <input type="text" id="product" v-model="order.product" required />
       </div>
 
-      <div>
-        <label for="jumlah_pinjam">Jumlah Pinjam:</label>
+      <div class="form-group">
+        <label for="quantity">Quantity</label>
+        <input type="number" id="quantity" v-model="order.quantity" required />
+      </div>
 
+      <div class="form-group">
+        <label for="totalPrice">Total Harga</label>
         <input
           type="number"
-          v-model="form.jumlah_pinjam"
-          id="jumlah_pinjam"
-          :disabled="true"
+          id="totalPrice"
+          v-model="order.totalPrice"
+          required
         />
       </div>
 
-      <div class="button-container">
-        <button type="button" @click="cancelForm">Batal</button>
-
-        <button type="submit">Ajukan</button>
-      </div>
+      <button type="submit" class="btn-submit">Submit Order</button>
     </form>
   </div>
 </template>
 
 <script>
 export default {
-  props: {
-    transaction: Object,
-  },
-
   data() {
     return {
-      form: {
-        kode: this.transaction ? this.transaction.kode : "",
-
-        nama: this.transaction ? this.transaction.namaBarang : "",
-
-        tanggal_pinjam: this.transaction ? this.transaction.tanggalPinjam : "",
-
-        tanggal_kembali: "",
-
-        jumlah_pinjam: this.transaction ? this.transaction.jumlahPinjam : 1,
+      order: {
+        orderNo: "",
+        stakeholderName: "",
+        product: "",
+        quantity: 0,
+        totalPrice: 0,
       },
     };
   },
-
   methods: {
-    submitForm() {
-      this.$emit("submit", { ...this.form });
-    },
-
-    cancelForm() {
-      this.$emit("cancel");
-    },
-  },
-
-  watch: {
-    transaction(newTransaction) {
-      if (newTransaction) {
-        this.form.kode = newTransaction.kode;
-
-        this.form.nama = newTransaction.namaBarang;
-
-        this.form.tanggal_pinjam = newTransaction.tanggalPinjam;
-
-        this.form.jumlah_pinjam = newTransaction.jumlahPinjam;
-      }
+    submitOrder() {
+      // Logika untuk submit order atau kirim data ke backend
+      console.log("Order Submitted:", this.order);
+      // Reset form setelah submit
+      this.order = {
+        orderNo: "",
+        stakeholderName: "",
+        product: "",
+        quantity: 0,
+        totalPrice: 0,
+      };
     },
   },
 };
 </script>
 
 <style scoped>
-form {
-  display: flex;
-
-  flex-direction: column;
-
-  width: 100%;
-
+.order-form {
   max-width: 400px;
-
-  margin: auto;
-
-  background: #f0f0f0;
-
+  margin: 20px auto;
   padding: 20px;
-
+  border: 1px solid #ccc;
   border-radius: 8px;
-
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
 }
 
-h2 {
+.order-form-title {
   text-align: center;
-
   margin-bottom: 20px;
 }
 
-label {
-  margin-top: 10px;
+.form-group {
+  margin-bottom: 15px;
 }
 
-input {
-  padding: 5px;
-
-  margin-top: 5px;
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
 }
 
-.button-container {
-  display: flex;
-
-  justify-content: space-between;
-
-  margin-top: 20px;
-}
-
-button {
-  background-color: #4caf50;
-
-  color: white;
-
-  border: none;
-
-  padding: 10px;
-
-  cursor: pointer;
-
+.form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
   border-radius: 4px;
 }
 
-button:hover {
+.btn-submit {
+  width: 100%;
+  padding: 10px;
+  background-color: #4caf50;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.btn-submit:hover {
   background-color: #45a049;
-}
-
-button[type="button"] {
-  background-color: #f44336;
-}
-
-button[type="button"]:hover {
-  background-color: #e31b0c;
 }
 </style>
